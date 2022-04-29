@@ -57,8 +57,8 @@ class _EmptyOrdersWidgetState extends State<EmptyOrdersWidget> {
                     decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         gradient: LinearGradient(begin: Alignment.bottomLeft, end: Alignment.topRight, colors: [
-                          Theme.of(context).focusColor.withOpacity(0.7),
-                          Theme.of(context).focusColor.withOpacity(0.05),
+                          Theme.of(context).accentColor.withOpacity(0.7),
+                          Theme.of(context).accentColor.withOpacity(0.05),
                         ])),
                     child: Icon(
                       Icons.shopping_basket_outlined,

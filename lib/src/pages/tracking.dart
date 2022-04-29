@@ -329,7 +329,8 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> with SingleTickerPro
                             height: 28,
                             width: 160,
                             decoration:
-                            BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(100)), color: _con.order.active ? Theme.of(context).accentColor : Colors.redAccent),
+                            BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(100)),
+                                color: _con.order.active ? Theme.of(context).accentColor : Colors.redAccent),
                             alignment: AlignmentDirectional.center,
                             child: Text(
                               _con.order.active ? '${_con.order.orderStatus.status}' : S.of(context).canceled,
@@ -344,7 +345,10 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> with SingleTickerPro
                                 padding: const EdgeInsets.all(12),
                                 child: Theme(
                                   data: ThemeData(
-                                    primaryColor: Theme.of(context).accentColor,
+                                      accentColor: Theme.of(context).accentColor,
+                                      colorScheme: ColorScheme.light(
+                                          primary: Theme.of(context).accentColor
+                                      )
                                   ),
                                   child: Stepper(
                                     physics: ClampingScrollPhysics(),

@@ -83,8 +83,8 @@ class CardWidget extends StatelessWidget {
                   Container(
                     margin: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
-                    decoration: BoxDecoration(color: !market.closed && (selectedTiming != null && selectedTiming.closedfull == 0) && (currentTime.isAfter(startTime) && currentTime.isBefore(endTime)) ? Colors.green : Colors.grey, borderRadius: BorderRadius.circular(24)),
-                    child: !market.closed && (selectedTiming != null && selectedTiming.closedfull == 0) && (currentTime.isAfter(startTime) && currentTime.isBefore(endTime))
+                    decoration: BoxDecoration(color: !market.closed && (selectedTiming != null && selectedTiming.closedfull == 0) && (currentTime.isAfter(startTime) && currentTime.isBefore(endTime)|| startTime.compareTo(endTime) == 0) ? Colors.green : Colors.grey, borderRadius: BorderRadius.circular(24)),
+                    child: !market.closed && (selectedTiming != null && selectedTiming.closedfull == 0) && (currentTime.isAfter(startTime) && currentTime.isBefore(endTime)|| startTime.compareTo(endTime) == 0)
                         ? Text(
                             S.of(context).open,
                             style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),

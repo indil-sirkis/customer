@@ -210,7 +210,7 @@ class _ProfileAvatarWidgetState extends StateMVC<ProfileAvatarWidget> {
                       if (image == null) return;
                       profileFile = File(image.path);
 
-                      var profile = await http.MultipartFile.fromPath(
+                      http.MultipartFile profile = await http.MultipartFile.fromPath(
                           "avatar",
                           profileFile.path,filename: "${File(image.path).path.split('/').last}"
                       );

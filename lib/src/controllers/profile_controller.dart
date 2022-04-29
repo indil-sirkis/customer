@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:markets/src/models/user.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
@@ -41,7 +42,7 @@ class ProfileController extends ControllerMVC {
     listenForRecentOrders(message: S.of(state.context).orders_refreshed_successfuly);
   }
 
-  void update(User user,file) async {
+  void update(User user,MultipartFile file) async {
     user.deviceToken = null;
     repository.updateProfile(user,file).then((value) {
       setState(() {});

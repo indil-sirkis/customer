@@ -156,8 +156,8 @@ class _MarketWidgetState extends StateMVC<MarketWidget> {
                                   SizedBox(width: 20),
                                   Container(
                                     padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
-                                    decoration: BoxDecoration(color: !_con.market.closed && (selectedTiming != null && selectedTiming.closedfull == 0) && (currentTime.isAfter(startTime) && currentTime.isBefore(endTime)) ? Colors.green : Colors.grey, borderRadius: BorderRadius.circular(24)),
-                                    child: !_con.market.closed && (selectedTiming != null && selectedTiming.closedfull == 0) && (currentTime.isAfter(startTime) && currentTime.isBefore(endTime))
+                                    decoration: BoxDecoration(color: !_con.market.closed && (selectedTiming != null && selectedTiming.closedfull == 0) && (currentTime.isAfter(startTime) && currentTime.isBefore(endTime)|| startTime.compareTo(endTime) == 0) ? Colors.green : Colors.grey, borderRadius: BorderRadius.circular(24)),
+                                    child: !_con.market.closed && (selectedTiming != null && selectedTiming.closedfull == 0) && (currentTime.isAfter(startTime) && currentTime.isBefore(endTime)|| startTime.compareTo(endTime) == 0)
                                         ? Text(
                                             S.of(context).open,
                                             style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),

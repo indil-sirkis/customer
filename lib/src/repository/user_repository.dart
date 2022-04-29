@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../helpers/helper.dart';
@@ -11,6 +12,7 @@ import '../models/address.dart';
 import '../models/credit_card.dart';
 import '../models/user.dart' as userModel;
 import '../repository/user_repository.dart' as userRepo;
+import '../repository/user_repository.dart' as repository;
 
 ValueNotifier<userModel.User> currentUser = new ValueNotifier(userModel.User());
 
@@ -127,16 +129,16 @@ Future<userModel.User> update(userModel.User user) async {
   return currentUser.value;
 }
 
-Future<userModel.User> updateProfile(userModel.User user,file) async {
+Future<userModel.User> updateProfile(userModel.User user,MultipartFile file) async {
   final String _apiToken = 'api_token=${currentUser.value.apiToken}';
   final String url = '${GlobalConfiguration().getValue('api_base_url')}users/${currentUser.value.id}?$_apiToken';
   var request = new http.MultipartRequest(
       "POST", Uri.parse(url));
 
+  request.files.add(file);
   user.toMap().forEach((i, value) {
     request.fields.putIfAbsent(i, () => value.toString());
   });
-    request.files.add(file);
   print(user.toMap());
   print("URL::${url}");
   request.headers.addAll({
@@ -150,9 +152,10 @@ Future<userModel.User> updateProfile(userModel.User user,file) async {
       .then(
         (response) => response.stream.bytesToString().then(
           (value) {
-            print("UPLOAD:::${value}");
+            print("UPLOAD:::${json.decode(value)['data']['media'][0]}");
             setCurrentUser(value);
             currentUser.value = userModel.User.fromJSON(json.decode(value)['data']);
+            // repository.currentUser.value.image?.url = currentUser.value.image?.url;
             return currentUser.value;
       },
     ),
