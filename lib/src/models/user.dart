@@ -96,6 +96,6 @@ class User {
 
   bool profileCompleted() {
     print("PROFILE:::${address}:::${phone}:::${verifiedPhone}");
-    return address != null && address != '' && phone != null && phone != '' && verifiedPhone != null && verifiedPhone;
+    return address != null && address != '' && phone != null && phone != '';
   }
 }

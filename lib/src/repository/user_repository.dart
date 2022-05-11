@@ -45,6 +45,7 @@ Future<userModel.User> register(userModel.User user) async {
     headers: {HttpHeaders.contentTypeHeader: 'application/json'},
     body: json.encode(user.toMap()),
   );
+  print("PARAM_REGISTER:::${url}::::${json.encode(user.toMap())}");
   if (response.statusCode == 200) {
     setCurrentUser(response.body);
     currentUser.value = userModel.User.fromJSON(json.decode(response.body)['data']);
@@ -119,6 +120,7 @@ Future<userModel.User> update(userModel.User user) async {
   final client = new http.Client();
   print(user.toMap());
   print("URL::${url}");
+  print("PARAM_UPDATE:::${url}::::${json.encode(user.toMap())}");
   final response = await client.post(
     Uri.parse(url),
     headers: {HttpHeaders.contentTypeHeader: 'application/json'},

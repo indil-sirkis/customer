@@ -117,7 +117,7 @@ class CartBottomDetailsWidget extends StatelessWidget {
                           onPressed: () {
                             print("Start${startTime}");
                             print("endTime${endTime}");
-                            if(!_con.carts[0].product.market.closed && (selectedTiming != null && selectedTiming.closedfull == 0) && (currentTime.isAfter(startTime) && currentTime.isBefore(endTime))) {
+                            if(!_con.carts[0].product.market.closed && (selectedTiming != null && selectedTiming.closedfull == 0) && (currentTime.isAfter(startTime) && currentTime.isBefore(endTime))|| startTime.compareTo(endTime) == 0) {
                               bool isActive = true;
                               for(int i=0; i<_con.carts.length; i++){
                                 if(!_con.carts[i].product.active){
@@ -135,7 +135,7 @@ class CartBottomDetailsWidget extends StatelessWidget {
                           },
                           disabledColor: Theme.of(context).focusColor.withOpacity(0.5),
                           padding: EdgeInsets.symmetric(vertical: 14),
-                          color: !_con.carts[0].product.market.closed && (selectedTiming != null && selectedTiming.closedfull == 0) && (currentTime.isAfter(startTime) && currentTime.isBefore(endTime))? Theme.of(context).accentColor : Theme.of(context).focusColor.withOpacity(0.5),
+                          color: !_con.carts[0].product.market.closed && (selectedTiming != null && selectedTiming.closedfull == 0) && (currentTime.isAfter(startTime) && currentTime.isBefore(endTime)|| startTime.compareTo(endTime) == 0)? Theme.of(context).accentColor : Theme.of(context).focusColor.withOpacity(0.5),
                           shape: StadiumBorder(),
                           child: Text(
                             S.of(context).checkout,
