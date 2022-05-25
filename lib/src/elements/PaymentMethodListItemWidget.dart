@@ -27,15 +27,16 @@ class PaymentMethodListItemWidget extends StatelessWidget {
       onTap: () {
         print(this.paymentMethod.name);
         // Navigator.of(context).pushNamed(this.paymentMethod.route);
-        if(this.paymentMethod.route == "/Checkout") {
+        if (this.paymentMethod.route == "/Checkout") {
           checkout(context, paymentMethod.amountTotal);
           // StripeService.init();
           // payViaExistingCard(context);
-        }/*else if(this.paymentMethod.route == "/Apple") {
+        } /*else if(this.paymentMethod.route == "/Apple") {
           checkoutApple(context, paymentMethod.amountTotal);
           // StripeService.init();
           // payViaExistingCard(context);
-        }*/else{
+        }*/
+        else {
           Navigator.of(context).pushNamed(this.paymentMethod.route);
         }
       },
@@ -44,7 +45,10 @@ class PaymentMethodListItemWidget extends StatelessWidget {
         decoration: BoxDecoration(
           color: Theme.of(context).primaryColor.withOpacity(0.9),
           boxShadow: [
-            BoxShadow(color: Theme.of(context).focusColor.withOpacity(0.1), blurRadius: 5, offset: Offset(0, 2)),
+            BoxShadow(
+                color: Theme.of(context).focusColor.withOpacity(0.1),
+                blurRadius: 5,
+                offset: Offset(0, 2)),
           ],
         ),
         child: Row(
@@ -54,7 +58,7 @@ class PaymentMethodListItemWidget extends StatelessWidget {
               height: 60,
               width: 60,
               padding: EdgeInsets.all(10),
-              child: Image.asset(paymentMethod.logo,fit: BoxFit.scaleDown),
+              child: Image.asset(paymentMethod.logo, fit: BoxFit.scaleDown),
             ),
             SizedBox(width: 15),
             Flexible(
@@ -94,29 +98,29 @@ class PaymentMethodListItemWidget extends StatelessWidget {
     );
   }
 
-
-  Future<void> checkout(context,String total)async{
-    print("TOTAL:::${setting.value.default_currency_code}::::${setting.value.defaultCurrency}");
+  Future<void> checkout(context, String total) async {
+    print(
+        "TOTAL:::${setting.value.default_currency_code}::::${setting.value.defaultCurrency}");
     Stripe.publishableKey = setting.value.stripe_key;
     Stripe.merchantIdentifier = "merchant.com.app.Indil";
     await Stripe.instance.applySettings();
+
     /// retrieve data from the backend
 
     try {
-
-      paymentIntentData =
-      await createPaymentIntent(total, setting.value.default_currency_code); //json.decode(response.body);
+      paymentIntentData = await createPaymentIntent(total,
+          setting.value.default_currency_code); //json.decode(response.body);
       // print('Response body==>${response.body.toString()}');
-      await Stripe.instance.initPaymentSheet(
-          paymentSheetParameters: SetupPaymentSheetParameters(
-              paymentIntentClientSecret: paymentIntentData['client_secret'],
-              applePay: true,
-              googlePay: false,
-              style: ThemeMode.light,
-              merchantCountryCode: 'GMD',
-              merchantDisplayName: 'indil.gm')).then((value){
-      });
-
+      await Stripe.instance
+          .initPaymentSheet(
+              paymentSheetParameters: SetupPaymentSheetParameters(
+                  paymentIntentClientSecret: paymentIntentData['client_secret'],
+                  applePay: true,
+                  googlePay: false,
+                  style: ThemeMode.light,
+                  merchantCountryCode: 'GM',
+                  merchantDisplayName: 'indil.gm'))
+          .then((value) {});
 
       ///now finally display payment sheeet
       displayPaymentSheet(context);
@@ -126,36 +130,33 @@ class PaymentMethodListItemWidget extends StatelessWidget {
   }
 
   displayPaymentSheet(context) async {
-
     try {
-      await Stripe.instance.presentPaymentSheet().then((newValue){
-
-
-        print('payment intent'+paymentIntentData['id'].toString());
-        print('payment intent'+paymentIntentData['client_secret'].toString());
-        print('payment intent'+paymentIntentData['amount'].toString());
-        print('payment intent'+paymentIntentData['card'].toString());
-        print('payment intent'+paymentIntentData.toString());
+      await Stripe.instance.presentPaymentSheet().then((newValue) {
+        print('payment intent' + paymentIntentData['id'].toString());
+        print('payment intent' + paymentIntentData['client_secret'].toString());
+        print('payment intent' + paymentIntentData['amount'].toString());
+        print('payment intent' + paymentIntentData['card'].toString());
+        print('payment intent' + paymentIntentData.toString());
         //orderPlaceApi(paymentIntentData!['id'].toString());
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("paid successfully")));
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text("paid successfully")));
         paymentIntentData = null;
         var param = {
-          "method":"Credit Card (Stripe Gateway)",
-          "status":"succeeded"
+          "method": "Credit Card (Stripe Gateway)",
+          "status": "succeeded"
         };
-        Navigator.of(context).pushNamed("/OrderSuccess",arguments: RouteArgument(param: param));
-      }).onError((error, stackTrace){
+        Navigator.of(context)
+            .pushNamed("/OrderSuccess", arguments: RouteArgument(param: param));
+      }).onError((error, stackTrace) {
         print('Exception/DISPLAYPAYMENTSHEET==> $error $stackTrace');
       });
-
-
     } on StripeException catch (e) {
       print('Exception/DISPLAYPAYMENTSHEET==> $e');
       showDialog(
           context: context,
           builder: (_) => AlertDialog(
-            content: Text("Cancelled "),
-          ));
+                content: Text("Cancelled "),
+              ));
     } catch (e) {
       print('$e');
     }
@@ -168,16 +169,15 @@ class PaymentMethodListItemWidget extends StatelessWidget {
         'amount': amount,
         'currency': currency,
         'payment_method_types[]': 'card',
-        'setup_future_usage':'on_session',
-        'use_stripe_sdk':'true',
+        'setup_future_usage': 'on_session',
+        'use_stripe_sdk': 'true',
       };
       print(body);
       var response = await http.post(
           Uri.parse('https://api.stripe.com/v1/payment_intents'),
           body: body,
           headers: {
-            'Authorization':
-            'Bearer ${setting.value.stripe_secret}',
+            'Authorization': 'Bearer ${setting.value.stripe_secret}',
             'Content-Type': 'application/x-www-form-urlencoded'
           });
       print('Create Intent reponse ===> ${response.body.toString()}');
@@ -188,7 +188,7 @@ class PaymentMethodListItemWidget extends StatelessWidget {
   }
 
   calculateAmount(String amount) {
-    final a = (int.parse(amount)) * 100 ;
+    final a = (int.parse(amount)) * 100;
     return a.toString();
   }
 
